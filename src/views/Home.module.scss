@@ -1,0 +1,171 @@
+.textarea {
+    width: 100%;
+    height: 240px;
+    padding: 16px;
+}
+.smInput {
+    width: 40px;
+    margin: 0 8px;
+}
+.actions {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+.sectionTitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 16px 0 8px 0;;
+}
+.table {
+    td,
+    th {
+        padding: 8px 16px;
+        border: 1px solid #000;
+    }
+}
+.addBox {
+    display: flex;
+    .left {
+        padding-right: 16px;
+        margin-right: 16px;
+        border-right: 1px solid #000;
+    }
+    .right {
+        width: 300px;
+    }
+    .typeList {
+        .item {
+            padding: 8px;
+            border: 1px solid #000;
+            cursor: pointer;
+        }
+        .active {
+            color: #fff;
+            background: #f00;
+        }
+    }
+}
+.ruleBox {
+    .ruleName {
+        font-weight: bold;
+        font-style: 16px;
+        margin-bottom: 8px;
+    }
+    .ruleBody {}
+}
+/**/
+.adasas {
+    color: aqua;
+}
+.hehe {
+    text-align: center;
+}
+.container {
+    width: 100%;
+    max-width: 800px;
+    // max-width: 1000px;
+    margin: 0 auto;
+    padding: 16px;
+}
+@font-face{
+    font-family: 'digital';
+    src:url('/static/ttf/digital7-mono.ttf');
+}
+.ratio {
+    float: left;
+    margin: 0 24px;
+    font-family: 'digital';
+    color: #f66;
+    font-size: 72px;
+    line-height: 1;
+}
+.all {
+    display: flex;
+    // width: 258px;
+    margin: 0 auto;
+}
+.digital {
+    display: inline-block;
+    position: relative;
+    font-size: 80px;
+    font-family: 'digital';
+    text-align: right;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 16px;
+    line-height: 1;
+    .digital-content,
+    .digitalBg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+    .digitalContent {
+        color: #f66;
+    }
+    .digitalBg {
+        display: none;
+        color: #eee;
+    }
+}
+.btn {
+    display: block;
+    margin-bottom: 16px;
+}
+.time {
+    font-weight: 100;
+    font-family: 'digital';
+    color: #f66;
+    text-align: center;
+}
+.asd {
+    font-weight: 100;
+    font-family: 'digital';;
+    color: #f66;
+    font-size: 100px;
+    text-align: center;
+}
+.input-box {
+    float: left;
+    .count {
+        margin-bottom: 16px;
+        color: #f66;
+        font-size: 80px;
+        font-family: 'digital';
+        text-align: center;
+    }
+    .btns {
+        text-align: center;
+        margin-bottom: 16px;
+    }
+    .add-btn {
+        font-size: 40px;
+        width: 88px;
+    }
+}
+.common-btns {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    text-align: center;
+}
+
+.vs {
+    display: flex;
+    margin-bottom: 24px;
+    .team {
+        flex-grow: 1;
+        // display: flex;
+        text-align: center;
+    }
+    .text {
+        width: 20px;
+        text-align: center;
+    }
+}
+.timeBox {
+    margin-bottom: 24px;
+    font-size: 48px;
+    text-align: center;
+}
