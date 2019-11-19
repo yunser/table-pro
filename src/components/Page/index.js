@@ -79,7 +79,7 @@ export default function Page(props) {
             <div className="ui-page-side-content">
                 <div className="side-header">
                     {/* {windowWidth} */}
-                    <img className="logo" src="https://icons.yunser.com/icons/text.svg" />
+                    <img className="logo" src="https://table.yunser.com/static/img/table.svg" />
                 </div>
                 <List className="list" component="nav">
                     <ListItem button component={Link} to="/">

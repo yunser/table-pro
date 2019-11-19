@@ -11,6 +11,9 @@ import _ from 'lodash'
 import Page from '../components/Page'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
+import { HotTable } from '@handsontable/react'
+
+const saveAs = window.saveAs
 
 function AddDialog(props) {
     const { state, setState } = props
@@ -231,7 +234,19 @@ function AddDialog(props) {
 }
 
 export default class Home extends React.Component {
+
     state = {
+        tableData: [
+            ['', 'Tesla', 'Mercedes', 'Toyota', '', 'Volvo'],
+            ['2019', '10', '11', '12', '', '13'],
+            ['2020', '20', '11', '14', '', '13'],
+            ['2021', '30', '15', '12', '', '13'],
+            ['2022', '', '', '', '', ''],
+            ['', '', '', '', '', ''],
+            ['', '', '', '', '', ''],
+            ['2023', '30', '15', '12', '', '13'],
+        ],
+        //
         text: `1
 22
 333
@@ -421,6 +436,30 @@ This is Cat`,
             }
         }
     }
+
+    constructor(props) {
+        super(props)
+    }
+
+    componentDidMount() {
+        // var data = [
+        //     ['', 'Ford', 'Tesla', 'Toyota', 'Honda'],
+        //     ['2017', 10, 11, 12, 13],
+        //     ['2018', 20, 11, 14, 13],
+        //     ['2019', 30, 15, 12, 13]
+        //   ];
+
+        //   var container = document.getElementById('example');
+        //   var hot = new window.Handsontable(container, {
+        //     data: data,
+        //     rowHeaders: true,
+        //     colHeaders: true,
+        //     filters: true,
+        //     dropdownMenu: true,
+        //     key: 'non-commercial-and-evaluation',
+        //   })
+    }
+
     render() {
         const setState = data => {
             this.setState(data)
@@ -428,7 +467,7 @@ This is Cat`,
         const { history } = this.props
         let state = this.state
 
-        const { text, result, formData, rules, allRules, activeRule, addDialogVisible } = state
+        const { tableData, text, result, formData, rules, allRules, activeRule, addDialogVisible } = state
 
 
         let dealedResult = text.split('\n').filter(item => item).map((item, index) => {
@@ -514,6 +553,8 @@ This is Cat`,
 
             return (
                 <div>
+
+
                     <div className={classes.sectionTitle}>规则</div>
                     <table className={classes.table}>
                         <thead>
@@ -532,10 +573,184 @@ This is Cat`,
             )
         }
 
+        console.log('tableData', tableData)
 
+        function test() {
+            console.log('tableData', tableData)
+            tableData[0][0] = '这是什么'
+            setState({
+                tableData,
+            })
+        }
 
+        function importData() {
+            let file = document.getElementById('file').files[0]
+            let reader = new FileReader()
+            reader.onload = e => {
+                let content = e.target.result
+                let data = []
+                let rowDatas = content.split('\n')
+                rowDatas.forEach(rowData => {
+                    data.push(rowData.split(','))
+                })
+                setState({
+                    tableData: data
+                })
+                // this.data = data
+                // this.tableEditor.loadData(this.data)
+            }
+            reader.readAsText(file, 'utf-8')
+        }
 
+        function exportData() {
+            let content = tableData.map(item => item.join(', ')).join('\n')
+            let blob = new Blob([content], {type: 'text/plain;charset=utf-8'})
+            saveAs(blob, 'tableex.yunser.com.csv')
+        }
 
+        function sort() {
+            console.log('tableData', tableData)
+            function sort(table) {
+                return table.sort((a, b) => {
+                    console.log('a[0]', a[0])
+                    return ('' + a[0]).localeCompare('' + b[0])
+                })
+            }
+            let newTableData = sort(tableData)
+            // console.log('result', sort(this.data))
+            // this.setData()
+            setState({
+                tableData: newTableData,
+            })
+        }
+
+        function sort2() {
+            console.log('tableData', tableData)
+            function sort(table) {
+                return table.sort((a, b) => {
+                    console.log('a[0]', a[0])
+                    return -1 * ('' + a[0]).localeCompare('' + b[0])
+                })
+            }
+            let newTableData = sort(tableData)
+            // console.log('result', sort(this.data))
+            // this.setData()
+            setState({
+                tableData: newTableData,
+            })
+        }
+
+        function sort3() {
+            console.log('tableData', tableData)
+            function sort(table) {
+                return table.sort((a, b) => {
+                    return 1 * ('' + a[1]).localeCompare('' + b[1])
+                })
+            }
+            let newTableData = sort(tableData)
+            // console.log('result', sort(this.data))
+            // this.setData()
+            setState({
+                tableData: newTableData,
+            })
+        }
+
+        function removeFirst() {
+            tableData.splice(0, 1)
+            setState({
+                tableData,
+            })
+        }
+
+        function removeBlankRow() {
+            let newTableData = tableData.filter((item, index) => {
+                return item.join('') !== ''
+            })
+            setState({
+                tableData: newTableData,
+            })
+        }
+
+        function removeBlankCol() {
+            let blankArr = []
+            for (let i = 0; i < tableData[0].length; i++) {
+                blankArr[i] = true
+            }
+            for (let row = 0; row < tableData.length; row++) {
+                for (let col = 0; col < tableData[row].length; col++) {
+                    if (tableData[row][col]) {
+                        blankArr[col]  = false
+                    }
+                }
+            }
+            let newTableData = tableData.map((item, index) => {
+                return item.filter((item, index) => {
+                    return !blankArr[index]
+                })
+            })
+            setState({
+                tableData: newTableData,
+            })
+        }
+
+        function removeCol() {
+            let newTableData = tableData.map((item, index) => {
+                return item.splice(0, 1)
+            })
+            setState({
+                tableData: newTableData,
+            })
+        }
+
+        function removeCol2() {
+            let newTableData = tableData.map((item, index) => {
+                return item.filter((item, index) => {
+                    return index !== 0 && index !== 2
+                })
+            })
+            setState({
+                tableData: newTableData,
+            })
+        }
+
+        function remove2() {
+            let newTableData = tableData.filter((item, index) => {
+                return index !== 0 && index !== 2
+            })
+            setState({
+                tableData: newTableData,
+            })
+        }
+
+        function remove8() {
+            let newTableData = tableData.filter((item, index) => {
+                return item[1]
+            })
+            setState({
+                tableData: newTableData,
+            })
+        }
+
+        function remove9() {
+            let newTableData = tableData.filter((item, index) => {
+                return item[2] !== '11'
+            })
+            setState({
+                tableData: newTableData,
+            })
+        }
+
+        function view9() {
+            let newTableData = tableData.filter((item, index) => {
+                return item[2] === '11'
+            })
+            setState({
+                tableData: newTableData,
+            })
+        }
+
+        let randomArr = [12, 8, 20, 9, 14, 13, 10, 1, 6, 23, 5, 22, 4, 7, 18, 17, 24, 15, 3, 16, 11, 2, 19, 21]
+        console.log('time', randomArr[new Date().getHours()])
 
         return (
             <Page title="表格+" menu={[
@@ -553,26 +768,72 @@ This is Cat`,
             ]}>
                 <div className={classes.container}>
                     <div class="common-container container">
-                        <textarea className={classes.textarea} value={text} onChange={handerTextChange} placeholder="输入要处理的文本，逐行处理" />
+                        <div id="example"></div>
+                        <HotTable data={tableData} licenseKey="non-commercial-and-evaluation" colHeaders={true} rowHeaders={true} width="600" height="300" />
                     </div>
-                    <Rules />
+                    <input className={classes.btn} id="file" type="file" variant="contained" />
+                    <Button className={classes.btn} variant="contained" onClick={importData}>导入 CSV</Button>
+                    <Button className={classes.btn} variant="contained" onClick={exportData}>导出 CSV</Button>
+                    {/* <Button className={classes.btn} variant="contained" onClick={test}>测试</Button> */}
+                    <div className={classes.sectionHeader}>过滤</div>
+                    <div className={classes.actions}>
+                        <Button className={classes.btn} variant="contained" onClick={view9}>第三列为11</Button>
+                    </div>
 
+                    <div className={classes.sectionHeader}>排序</div>
+                    <div className={classes.actions}>
+                        <Button className={classes.btn} variant="contained" onClick={sort}>排序</Button>
+                        <Button className={classes.btn} variant="contained" onClick={sort2}>倒序排序</Button>
+                        <Button className={classes.btn} variant="contained" onClick={sort3}>根据第二列排序</Button>
+                    </div>
 
+                    <div className={classes.sectionHeader}>统计</div>
+                    <div className={classes.actions}>
+                    </div>
+
+                    <div className={classes.sectionHeader}>分组</div>
+                    <div className={classes.actions}>
+                    </div>
+
+                    <div className={classes.sectionHeader}>操作</div>
+                    <div className={classes.actions}>
+                        <Button className={classes.btn} variant="contained" onClick={removeFirst}>还原</Button>
+                    </div>
+
+                    <div className={classes.sectionHeader}>删除行</div>
+                    <div className={classes.actions}>
+                        <Button className={classes.btn} variant="contained" onClick={removeFirst}>删除第一行</Button>
+                        <Button className={classes.btn} variant="contained" onClick={remove2}>删除第一行和第三行</Button>
+                        <Button className={classes.btn} variant="contained" onClick={removeBlankRow}>删除空行</Button>
+                        <Button className={classes.btn} variant="contained" onClick={remove8}>删除第二列为空的行</Button>
+                        <Button className={classes.btn} variant="contained" onClick={remove9}>删除第三列为11的行</Button>
+                    </div>
+
+                    <div className={classes.sectionHeader}>删除列</div>
+                    <div className={classes.actions}>
+                        <Button className={classes.btn} variant="contained" onClick={removeCol2}>删除第一列和第三列</Button>
+                        <Button className={classes.btn} variant="contained" onClick={removeCol}>删除第一列</Button>
+                        <Button className={classes.btn} variant="contained" onClick={removeBlankCol}>删除空列</Button>
+                    </div>
+
+                    {/* <Rules /> */}
+
+{/*
                     <br />
 
                     <br />
                     <div className={classes.actions}>
                         <Button className={classes.btn} variant="contained" onClick={addRule}>添加规则</Button>
-                    </div>
-                    <textarea className={classes.textarea} value={dealedResult} placeholder="结果" />
+                    </div> */}
+                    {/* <textarea className={classes.textarea} value={dealedResult} placeholder="结果" /> */}
                     {/* <Button className={classes.btn} variant="contained" onClick={reset}>重置</Button> */}
                     {/* <Button className={classes.btn} variant="contained" onClick={record}>记录</Button> */}
-                    <AddDialog {
+                    {/* <AddDialog {
                         ...{
                             state,
                             setState
                         }
-                    } />
+                    } /> */}
 
                 </div>
             </Page>
