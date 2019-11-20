@@ -12,6 +12,8 @@ import Page from '../components/Page'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import { HotTable } from '@handsontable/react'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 const saveAs = window.saveAs
 
@@ -774,6 +776,19 @@ This is Cat`,
                     <input className={classes.btn} id="file" type="file" variant="contained" />
                     <Button className={classes.btn} variant="contained" onClick={importData}>导入 CSV</Button>
                     <Button className={classes.btn} variant="contained" onClick={exportData}>导出 CSV</Button>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={state.checkedA}
+                                // onChange={handleChange('checkedA')}
+                                value="checkedA"
+                                // inputProps={{
+                                // 'aria-label': 'primary checkbox',
+                                // }}
+                            />
+                        }
+                        label="头部"
+                    />
                     {/* <Button className={classes.btn} variant="contained" onClick={test}>测试</Button> */}
                     <div className={classes.sectionHeader}>过滤</div>
                     <div className={classes.actions}>
