@@ -790,7 +790,7 @@ This is Cat`,
                         label="头部"
                     />
                     {/* <Button className={classes.btn} variant="contained" onClick={test}>测试</Button> */}
-                    <div className={classes.sectionHeader}>过滤</div>
+                    <div className={classes.sectionHeader}>查询</div>
                     <div className={classes.actions}>
                         <Button className={classes.btn} variant="contained" onClick={view9}>第三列为11</Button>
                     </div>
